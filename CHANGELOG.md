@@ -10,18 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release of SkyPulse weather data package
 - Modern Python weather data retrieval library
+- Full async support with context managers
 - Comprehensive CLI interface with rich formatting
 - Support for both basic (j1) and extended (j2) API formats
-- Current weather conditions retrieval
-- Multi-day forecast support
+- Current weather conditions retrieval (sync/async)
+- Multi-day forecast support (sync/async)
 - Astronomical data integration
 - Location information handling
-- Async support preparation
 - Type hints throughout the codebase
 - Pydantic models for data validation
 - Comprehensive error handling system
 
 ### Features
+- Both synchronous and asynchronous APIs
 - Rich, color-coded CLI output
 - JSON export capabilities
 - Detailed and summary view options
@@ -29,16 +30,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custom API URL support
 - Configurable output formats
 - Cross-platform compatibility
+- Async context manager support
+- Session management for both sync/async
 
 ### Dependencies
-- Core: requests, typing-extensions, aiohttp, pydantic, python-dateutil
+- Core: requests, aiohttp, pydantic, typing-extensions, python-dateutil
 - CLI: rich, typer
+- Async: aiohttp, asyncio
 
 ### Development
 - Setup configuration with setup.py
 - Development installation support
-- Comprehensive test suite
+- Comprehensive test suite with async tests
 - Modern Python packaging practices
 - Type-safe implementations
+- Async-aware error handling
 
 [1.0.0]: https://github.com/HelpingAI/skypulse/releases/tag/v1.0.0

@@ -1,74 +1,68 @@
 <div align="center">
 
-# ☁️ SkyPulse
+# ☀️ SkyPulse
 
-> A powerful, modern Python package for weather data retrieval with elegant API integration.
+### Modern Python Weather Data Package with Async Support
 
-[![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
-[![PyPI version](https://badge.fury.io/py/skypulse.svg)](https://badge.fury.io/py/skypulse)
-[![License](https://img.shields.io/badge/License-HelpingAI%20v3.0-orange.svg)](LICENSE.md)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-HelpingAI-blue.svg)](LICENSE.md)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Maintainer](https://img.shields.io/badge/maintainer-HelpingAI-blue)](https://github.com/HelpingAI)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![Type Hints: mypy](https://img.shields.io/badge/type%20hints-mypy-blue.svg)](https://mypy.readthedocs.io/)
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [CLI Usage](#-cli-usage) • [Documentation](#-documentation) • [Examples](#-examples) • [Contributing](#-contributing)
+*A powerful Python library for weather data retrieval with both synchronous and asynchronous support.*
 
----
+[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Examples](#examples) • [Contributing](#contributing)
 
 </div>
 
-## 🌟 Features
+## ✨ Features
 
-<div align="left">
-
-- **🌍 Comprehensive Data**
-  - Current weather conditions
-  - Multi-day forecasts
-  - Detailed astronomy data
-  - Location information
-
-- **🚀 Modern Architecture**
-  - Async support with `aiohttp`
+- **Modern Python Design**
   - Type hints throughout
+  - Async and sync support
   - Pydantic models
+  - Context managers
   - Rich CLI interface
 
-- **💪 Robust & Reliable**
-  - Comprehensive error handling
-  - Rate limiting support
-  - Automatic retries
-  - Detailed logging
+- **Comprehensive Weather Data**
+  - Current conditions
+  - Multi-day forecasts
+  - Astronomical data
+  - Location information
+  - Extended format support (j1/j2)
 
-- **🛠️ Developer Friendly**
-  - Intuitive API design
-  - Extensive documentation
-  - Type completion support
+- **Flexible Usage**
+  - Synchronous operations
+  - Asynchronous operations
+  - Custom API endpoints
+  - Format selection
+  - Error handling
+
+- **Developer Experience**
+  - Rich documentation
+  - Type safety
+  - IDE completion
   - Comprehensive examples
+  - Testing support
 
-</div>
+## 🚀 Installation
 
-## 📦 Installation
-
-<div align="left">
-
+### From PyPI
 ```bash
-# Using pip (recommended)
 pip install skypulse
+```
 
-# Using poetry
-poetry add skypulse
-
-# Development installation
+### Development Installation
+```bash
 git clone https://github.com/HelpingAI/skypulse.git
 cd skypulse
 pip install -e ".[dev]"
 ```
 
-</div>
+## 📖 Quick Start
 
-## 🚀 Quick Start
-
-<div align="left">
-
+### Synchronous Usage
 ```python
 from skypulse import SkyPulse
 
@@ -77,120 +71,36 @@ client = SkyPulse()
 
 # Get current weather
 current = client.get_current("London")
-print(f"🌡️ Temperature: {current.temperature_c}°C ({current.temperature_f}°F)")
-print(f"💧 Humidity: {current.humidity}%")
-print(f"💨 Wind: {current.wind_speed_kmh} km/h {current.wind_direction}")
+print(f"Temperature: {current.temperature_c}°C")
+print(f"Condition: {current.condition.description}")
 
-# Get detailed forecast
-forecast = client.get_forecast("London", days=3)
+# Get forecast
+forecast = client.get_forecast("London")
 for day in forecast.days:
-    print(f"\n📅 {day.date}:")
-    print(f"  🌡️ Temperature: {day.min_temp_c}°C to {day.max_temp_c}°C")
-    print(f"  ☀️ UV Index: {day.uv_index}")
-    print(f"  🌅 Sunrise: {day.astronomy.sunrise}")
-    print(f"  🌇 Sunset: {day.astronomy.sunset}")
+    print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
 ```
 
-</div>
+### Asynchronous Usage
+```python
+import asyncio
+from skypulse import SkyPulse
 
-## 🖥️ CLI Usage
+async def get_weather():
+    async with SkyPulse(async_mode=True) as client:
+        # Get current weather
+        current = await client.get_current_async("London")
+        print(f"Temperature: {current.temperature_c}°C")
+        
+        # Get forecast
+        forecast = await client.get_forecast_async("London")
+        for day in forecast.days:
+            print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
 
-<div align="left">
-
-SkyPulse comes with a powerful CLI for quick weather checks:
-
-```bash
-# Get current weather
-skypulse "London"
-
-# Get 5-day forecast with detailed info
-skypulse "London" -f -d 5 -D
-
-# Export to JSON
-skypulse "London" -f --export weather.json
+# Run async code
+asyncio.run(get_weather())
 ```
-
-### CLI Options
-
-<table>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-<tr>
-<td><code>--forecast, -f</code></td>
-<td>Get weather forecast</td>
-</tr>
-<tr>
-<td><code>--days, -d N</code></td>
-<td>Number of forecast days (1-10)</td>
-</tr>
-<tr>
-<td><code>--detailed, -D</code></td>
-<td>Show detailed information</td>
-</tr>
-<tr>
-<td><code>--format FMT</code></td>
-<td>API format (j1 or j2)</td>
-</tr>
-<tr>
-<td><code>--json, -j</code></td>
-<td>Output raw JSON</td>
-</tr>
-<tr>
-<td><code>--export, -e FILE</code></td>
-<td>Export to JSON file</td>
-</tr>
-<tr>
-<td><code>--no-color</code></td>
-<td>Disable colored output</td>
-</tr>
-</table>
-
-</div>
 
 ## 📚 Documentation
-
-<div align="left">
-
-### Data Models
-
-<details>
-<summary><b>Current Weather</b></summary>
-
-```python
-class Weather:
-    temperature_c: float      # Temperature in Celsius
-    temperature_f: float      # Temperature in Fahrenheit
-    feels_like_c: float      # Feels like temperature
-    humidity: int            # Humidity percentage
-    wind_speed_kmh: float    # Wind speed in km/h
-    wind_direction: str      # Wind direction (N, NE, etc.)
-    pressure_mb: float       # Pressure in millibars
-    uv_index: float         # UV index
-    visibility_km: float    # Visibility in kilometers
-    condition: WeatherCondition  # Weather condition details
-```
-
-</details>
-
-<details>
-<summary><b>Forecast</b></summary>
-
-```python
-class Forecast:
-    days: List[ForecastDay]  # List of forecast days
-
-class ForecastDay:
-    date: str               # Date in YYYY-MM-DD format
-    max_temp_c: float      # Maximum temperature
-    min_temp_c: float      # Minimum temperature
-    rain_chance: int       # Chance of rain (%)
-    condition: WeatherCondition  # Weather condition
-    astronomy: Astronomy   # Astronomical data
-```
-
-</details>
 
 ### API Reference
 
@@ -199,40 +109,83 @@ class ForecastDay:
 
 ```python
 class SkyPulse:
-    def get_current(location: str, format: str = "j1") -> Weather:
+    def __init__(self, api_url: Optional[str] = None, async_mode: bool = False):
+        """Initialize SkyPulse client."""
+        
+    def get_current(self, location: str, format: str = "j1") -> Weather:
         """Get current weather for a location."""
         
-    def get_forecast(location: str, format: str = "j1") -> Forecast:
+    async def get_current_async(self, location: str, format: str = "j1") -> Weather:
+        """Get current weather for a location asynchronously."""
+        
+    def get_forecast(self, location: str, format: str = "j1") -> Forecast:
         """Get weather forecast for a location."""
         
-    def get_all(location: str, format: str = "j1") -> Dict[str, Any]:
+    async def get_forecast_async(self, location: str, format: str = "j1") -> Forecast:
+        """Get weather forecast for a location asynchronously."""
+        
+    def get_all(self, location: str, format: str = "j1") -> Dict[str, Any]:
         """Get all weather data for a location."""
+        
+    async def get_all_async(self, location: str, format: str = "j1") -> Dict[str, Any]:
+        """Get all weather data for a location asynchronously."""
 ```
-
 </details>
 
-</div>
+<details>
+<summary><b>Weather Models</b></summary>
+
+```python
+@dataclass
+class Weather:
+    temperature_c: float
+    temperature_f: float
+    feels_like_c: float
+    humidity: int
+    wind_speed_kmh: float
+    wind_direction: str
+    condition: WeatherCondition
+
+@dataclass
+class Forecast:
+    days: List[ForecastDay]
+
+@dataclass
+class Location:
+    name: str
+    country: str
+    latitude: float
+    longitude: float
+```
+</details>
+
+### Data Formats
+
+- **j1 (Basic)**
+  - Current conditions
+  - Basic forecast
+  - Essential location data
+
+- **j2 (Extended)**
+  - Detailed conditions
+  - Extended forecast
+  - Astronomical data
+  - Request metadata
 
 ## 🌈 Examples
 
-<div align="left">
-
-### Async Usage
-
+### Custom API URL
 ```python
-import asyncio
-from skypulse import AsyncSkyPulse
+# Synchronous
+client = SkyPulse(api_url="https://your-api-url.com")
+weather = client.get_current("London")
 
-async def get_weather():
-    client = AsyncSkyPulse()
-    weather = await client.get_current("London")
-    print(f"Temperature: {weather.temperature_c}°C")
-
-asyncio.run(get_weather())
+# Asynchronous
+async with SkyPulse(api_url="https://your-api-url.com", async_mode=True) as client:
+    weather = await client.get_current_async("London")
 ```
 
 ### Error Handling
-
 ```python
 from skypulse import SkyPulse, SkyPulseError, LocationError
 
@@ -245,31 +198,64 @@ except SkyPulseError as e:
     print(f"⚠️ Weather error: {e}")
 ```
 
-### Custom API URL
-
+### Extended Format (j2)
 ```python
-client = SkyPulse(api_url="https://your-custom-api.com/weather")
+data = client.get_all("London", format="j2")
+location = data["location"]
+current = data["current"]
+forecast = data["forecast"]
+
+print(f"Location: {location.name}, {location.country}")
+print(f"Temperature: {current.temperature_c}°C")
+print(f"Condition: {current.condition.description}")
+
+for day in forecast.days:
+    print(f"\nDate: {day.date}")
+    print(f"Temperature: {day.min_temp_c}°C to {day.max_temp_c}°C")
+    print(f"Sunrise: {day.astronomy.sunrise}")
+    print(f"Sunset: {day.astronomy.sunset}")
 ```
 
-</div>
+## 🛠️ Development
+
+### Setup
+```bash
+# Clone repository
+git clone https://github.com/HelpingAI/skypulse.git
+cd skypulse
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+```
+
+### Code Quality
+```bash
+# Format code
+black .
+isort .
+
+# Type checking
+mypy .
+
+# Linting
+ruff check .
+pylint skypulse
+```
 
 ## 🤝 Contributing
 
-<div align="left">
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-We welcome contributions! Here's how you can help:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-1. 🍴 Fork the repository
-2. 🌿 Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. 💾 Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. 📤 Push to the branch (`git push origin feature/AmazingFeature`)
-5. 🔄 Open a Pull Request
-
-</div>
-
-## 📄 License
-
-<div align="left">
+## 📝 License
 
 This project is licensed under the HelpingAI License v3.0 - see the [LICENSE](LICENSE.md) file for details.
 
@@ -278,9 +264,5 @@ This project is licensed under the HelpingAI License v3.0 - see the [LICENSE](LI
 <div align="center">
 
 Made with ❤️ by [HelpingAI](https://github.com/HelpingAI)
-
-<a href="https://github.com/HelpingAI/skypulse/stargazers">⭐ Star us on GitHub</a> •
-<a href="https://github.com/HelpingAI/skypulse/issues">📬 Report Bug</a> •
-<a href="https://github.com/HelpingAI/skypulse/issues">✨ Request Feature</a>
 
 </div>

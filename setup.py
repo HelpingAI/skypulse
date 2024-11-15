@@ -5,22 +5,26 @@ Licensed under the HelpingAI License v3.0
 """
 
 from setuptools import setup, find_packages
-import os
 from weatherflow.version import __version__, __prog__
 # Read README for long description
-with open("README.md", encoding="utf-8") as f:
-    long_description = f.read()
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
 
 setup(
     name=__prog__,
     version=__version__,
     author="HelpingAI",
     author_email="helpingai5@gmail.com",
-    description="A powerful Python package for weather data retrieval with elegant API integration",
+    description="Modern Python weather data retrieval library with async support",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/HelpingAI/skypulse",
-    packages=find_packages(),
+    project_urls={
+        "Bug Tracker": "https://github.com/HelpingAI/skypulse/issues",
+        "Documentation": "https://github.com/HelpingAI/skypulse#readme",
+        "Source": "https://github.com/HelpingAI/skypulse",
+        "Changelog": "https://github.com/HelpingAI/skypulse/blob/main/CHANGELOG.md",
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -37,17 +41,21 @@ setup(
         "Framework :: AsyncIO",
         "Natural Language :: English",
     ],
+    packages=find_packages(),
     python_requires=">=3.7",
     install_requires=[
         "requests>=2.25.0",
-        "typing-extensions>=4.0.0",
         "aiohttp>=3.8.0",
         "pydantic>=2.0.0",
+        "typing-extensions>=4.0.0",
         "python-dateutil>=2.8.2",
+        "rich>=10.0.0",
+        "typer>=0.4.0",
     ],
     extras_require={
         "dev": [
             "pytest>=7.4.2",
+            "pytest-asyncio>=0.15.0",
             "pytest-cov>=4.1.0",
             "black>=23.0.0",
             "isort>=5.12.0",
@@ -78,12 +86,6 @@ setup(
         "async",
         "skypulse",
     ],
-    project_urls={
-        "Documentation": "https://github.com/HelpingAI/skypulse",
-        "Source": "https://github.com/HelpingAI/skypulse",
-        "Issues": "https://github.com/HelpingAI/skypulse/issues",
-        "Changelog": "https://github.com/HelpingAI/skypulse/blob/main/CHANGELOG.md",
-    },
     package_data={
         "weatherflow": ["py.typed"],
     },
