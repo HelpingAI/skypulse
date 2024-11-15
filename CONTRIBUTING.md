@@ -194,7 +194,6 @@ def process_data(items: List[str], limit: Optional[int] = None) -> List[str]:
 - **Questions?** Open a [Discussion](https://github.com/HelpingAI/skypulse/discussions)
 - **Found a Bug?** Submit an [Issue](https://github.com/HelpingAI/skypulse/issues)
 - **New Feature?** Discuss in [Issues](https://github.com/HelpingAI/skypulse/issues)
-- **Need Help?** Join our [Discord](https://discord.gg/helpingai)
 
 <div align="center">
 

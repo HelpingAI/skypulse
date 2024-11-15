@@ -50,7 +50,6 @@
     <a href="#installation">Installation</a> •
     <a href="#quick-start">Quick Start</a> •
     <a href="#documentation">Documentation</a> •
-    <a href="#examples">Examples</a> •
     <a href="#contributing">Contributing</a>
   </h3>
 </div>
@@ -59,8 +58,8 @@
 
 ## ✨ Features
 
-<div class="feature-grid">
-  <div class="feature-item">
+<div class="grid">
+  <div class="feature">
     <h3>🔄 Modern Python Design</h3>
     <ul>
       <li>Full type hints support</li>
@@ -71,7 +70,7 @@
     </ul>
   </div>
 
-  <div class="feature-item">
+  <div class="feature">
     <h3>🌡️ Comprehensive Weather Data</h3>
     <ul>
       <li>Real-time conditions</li>
@@ -82,7 +81,7 @@
     </ul>
   </div>
 
-  <div class="feature-item">
+  <div class="feature">
     <h3>⚡ Flexible Usage</h3>
     <ul>
       <li>Sync/Async operations</li>
@@ -93,7 +92,7 @@
     </ul>
   </div>
 
-  <div class="feature-item">
+  <div class="feature">
     <h3>🛠️ Developer Experience</h3>
     <ul>
       <li>Comprehensive docs</li>
@@ -106,8 +105,6 @@
 </div>
 
 ## 🚀 Installation
-
-<div class="installation-options">
 
 ### 📦 From PyPI
 ```bash
@@ -127,15 +124,11 @@ pip install -e ".[dev]"
 - Required packages:
   - `requests>=2.28.0`
   - `aiohttp>=3.8.0`
-  - `pydantic>=1.9.0`
+  - `pydantic>=2.0.0`
   - `rich>=12.0.0`
   - `typer>=0.7.0`
 
-</div>
-
 ## 📖 Quick Start
-
-<div class="code-examples">
 
 ### 🔄 Synchronous Usage
 ```python
@@ -193,11 +186,7 @@ skypulse "London" --export weather.json
 skypulse "London" --simple
 ```
 
-</div>
-
 ## 📚 Documentation
-
-<div class="documentation">
 
 ### 🎯 Core Features
 
@@ -216,29 +205,16 @@ skypulse "London" --simple
 | `cache_ttl` | int | 300 | Cache TTL in seconds |
 | `timeout` | int | 10 | Request timeout in seconds |
 
-### 🛠️ Advanced Usage
-
-- **Custom Endpoints**: Configure custom API endpoints
-- **Proxy Support**: HTTP/HTTPS proxy configuration
-- **Response Parsing**: Custom response parsing options
-- **Retry Strategy**: Configurable retry mechanisms
-
-</div>
-
 ## 🤝 Contributing
-
-<div class="contributing">
 
 We welcome contributions! Here's how you can help:
 
 1. 🐛 **Report Bugs**: Open an [issue](https://github.com/HelpingAI/skypulse/issues)
 2. 💡 **Suggest Features**: Share your ideas in [issues](https://github.com/HelpingAI/skypulse/issues)
-3. 📝 **Documentation**: Help improve our [docs](https://skypulse.readthedocs.io/)
+3. 📝 **Documentation**: Help improve our docs
 4. 🔧 **Code**: Submit [pull requests](https://github.com/HelpingAI/skypulse/pulls)
 
 Please read our [Contributing Guide](CONTRIBUTING.md) for details.
-
-</div>
 
 ## 📊 Project Stats
 
@@ -257,24 +233,12 @@ Please read our [Contributing Guide](CONTRIBUTING.md) for details.
   </a>
 </div>
 
-## 📅 Release Schedule
-
-- **Stable Releases**: Every 4-6 weeks
-- **Bug Fixes**: As needed
-- **Security Updates**: Within 48 hours
-- [View Release History](https://github.com/HelpingAI/skypulse/releases)
-
 ## 🔒 Security
 
 Found a security issue? Please report it privately via:
 - [GitHub Security Advisories](https://github.com/HelpingAI/skypulse/security/advisories)
-- Email: security@helpingai.com
+- Email: helpingai5@gmail.com
 
-## 📫 Contact
-
-- **Discord**: [Join our community](https://discord.gg/helpingai)
-
-- **Email**: support@helpingai.com
 
 <div align="center">
 
@@ -291,40 +255,3 @@ Found a security issue? Please report it privately via:
 </p>
 
 </div>
-
-<style>
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.feature-item {
-  padding: 1rem;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
-  background: #ffffff;
-}
-
-.feature-item h3 {
-  margin-top: 0;
-  color: #0366d6;
-}
-
-.code-examples {
-  margin: 2rem 0;
-}
-
-.documentation {
-  margin: 2rem 0;
-}
-
-.contributing {
-  margin: 2rem 0;
-}
-
-.installation-options {
-  margin: 2rem 0;
-}
-</style>
