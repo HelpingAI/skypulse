@@ -5,7 +5,7 @@ Licensed under the HelpingAI License v3.0
 """
 
 from setuptools import setup, find_packages
-from weatherflow.version import __version__, __prog__
+from skypulse.version import __version__, __prog__
 # Read README for long description
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -44,51 +44,33 @@ setup(
     packages=find_packages(),
     python_requires=">=3.7",
     install_requires=[
-        "requests>=2.25.0",
+        "requests>=2.28.0",
         "aiohttp>=3.8.0",
         "pydantic>=2.0.0",
+        "rich>=12.0.0",
+        "typer>=0.7.0",
         "typing-extensions>=4.0.0",
         "python-dateutil>=2.8.2",
-        "rich>=10.0.0",
-        "typer>=0.4.0",
     ],
     extras_require={
         "dev": [
-            "pytest>=7.4.2",
-            "pytest-asyncio>=0.15.0",
-            "pytest-cov>=4.1.0",
-            "black>=23.0.0",
-            "isort>=5.12.0",
-            "mypy>=1.0.0",
-            "ruff>=0.1.0",
-            "pre-commit>=3.4.0",
-        ],
-        "docs": [
-            "sphinx>=7.0.0",
-            "sphinx-rtd-theme>=1.3.0",
-            "myst-parser>=2.0.0",
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "pytest-asyncio>=0.20.0",
+            "black>=22.0.0",
+            "isort>=5.10.0",
+            "mypy>=0.990",
+            "ruff>=0.0.290",
+            "pre-commit>=3.0.0",
+            "build>=0.10.0",
+            "twine>=4.0.0",
         ],
     },
     entry_points={
         "console_scripts": [
-            "skypulse=weatherflow.cli:main",
+            "skypulse=skypulse.cli:main",
         ],
     },
-    keywords=[
-        "weather",
-        "api",
-        "forecast",
-        "meteorology",
-        "climate",
-        "weather-api",
-        "weather-data",
-        "weather-forecast",
-        "async",
-        "skypulse",
-    ],
-    package_data={
-        "weatherflow": ["py.typed"],
-    },
+    include_package_data=True,
     zip_safe=False,
-    license="HelpingAI License v3.0",
 )

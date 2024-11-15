@@ -2,67 +2,142 @@
 
 # ☀️ SkyPulse
 
-### Modern Python Weather Data Package with Async Support
+<h3>Modern Python Weather Data Package with Async Support</h3>
 
-[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-HelpingAI-blue.svg)](LICENSE.md)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![Type Hints: mypy](https://img.shields.io/badge/type%20hints-mypy-blue.svg)](https://mypy.readthedocs.io/)
+<div align="center">
+  <a href="https://pypi.org/project/skypulse/">
+    <img src="https://img.shields.io/pypi/v/skypulse.svg" alt="PyPI version">
+  </a>
+  <a href="https://pypi.org/project/skypulse/">
+    <img src="https://img.shields.io/pypi/pyversions/skypulse.svg" alt="Python versions">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/actions">
+    <img src="https://github.com/HelpingAI/skypulse/workflows/tests/badge.svg" alt="Tests">
+  </a>
+  <a href="https://codecov.io/gh/HelpingAI/skypulse">
+    <img src="https://codecov.io/gh/HelpingAI/skypulse/branch/main/graph/badge.svg" alt="Coverage">
+  </a>
+  <a href="https://github.com/psf/black">
+    <img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black">
+  </a>
+  <a href="https://pycqa.github.io/isort/">
+    <img src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336" alt="Imports: isort">
+  </a>
+  <a href="https://mypy.readthedocs.io/">
+    <img src="https://img.shields.io/badge/type%20hints-mypy-blue.svg" alt="Type Hints: mypy">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/blob/main/LICENSE.md">
+    <img src="https://img.shields.io/github/license/HelpingAI/skypulse.svg" alt="License">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/stargazers">
+    <img src="https://img.shields.io/github/stars/HelpingAI/skypulse.svg" alt="GitHub stars">
+  </a>
+  <a href="https://pepy.tech/project/skypulse">
+    <img src="https://pepy.tech/badge/skypulse" alt="Downloads">
+  </a>
+  <a href="https://discord.gg/helpingai">
+    <img src="https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white" alt="Discord">
+  </a>
+</div>
 
-*A powerful Python library for weather data retrieval with both synchronous and asynchronous support.*
+<p align="center">
+  <i>A powerful Python library for weather data retrieval with both synchronous and asynchronous support.</i>
+</p>
 
-[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Examples](#examples) • [Contributing](#contributing)
+<div align="center">
+  <h3>
+    <a href="#features">Features</a> •
+    <a href="#installation">Installation</a> •
+    <a href="#quick-start">Quick Start</a> •
+    <a href="#documentation">Documentation</a> •
+    <a href="#examples">Examples</a> •
+    <a href="#contributing">Contributing</a>
+  </h3>
+</div>
 
 </div>
 
 ## ✨ Features
 
-- **Modern Python Design**
-  - Type hints throughout
-  - Async and sync support
-  - Pydantic models
-  - Context managers
-  - Rich CLI interface
+<div class="feature-grid">
+  <div class="feature-item">
+    <h3>🔄 Modern Python Design</h3>
+    <ul>
+      <li>Full type hints support</li>
+      <li>Async and sync operations</li>
+      <li>Pydantic data models</li>
+      <li>Context managers</li>
+      <li>Rich CLI interface</li>
+    </ul>
+  </div>
 
-- **Comprehensive Weather Data**
-  - Current conditions
-  - Multi-day forecasts
-  - Astronomical data
-  - Location information
-  - Extended format support (j1/j2)
+  <div class="feature-item">
+    <h3>🌡️ Comprehensive Weather Data</h3>
+    <ul>
+      <li>Real-time conditions</li>
+      <li>Multi-day forecasts</li>
+      <li>Astronomical data</li>
+      <li>Location information</li>
+      <li>Weather alerts</li>
+    </ul>
+  </div>
 
-- **Flexible Usage**
-  - Synchronous operations
-  - Asynchronous operations
-  - Custom API endpoints
-  - Format selection
-  - Error handling
+  <div class="feature-item">
+    <h3>⚡ Flexible Usage</h3>
+    <ul>
+      <li>Sync/Async operations</li>
+      <li>Custom API endpoints</li>
+      <li>Format selection (j1/j2)</li>
+      <li>Robust error handling</li>
+      <li>Progress tracking</li>
+    </ul>
+  </div>
 
-- **Developer Experience**
-  - Rich documentation
-  - Type safety
-  - IDE completion
-  - Comprehensive examples
-  - Testing support
+  <div class="feature-item">
+    <h3>🛠️ Developer Experience</h3>
+    <ul>
+      <li>Comprehensive docs</li>
+      <li>Type safety</li>
+      <li>IDE completion</li>
+      <li>Example code</li>
+      <li>Testing support</li>
+    </ul>
+  </div>
+</div>
 
 ## 🚀 Installation
 
-### From PyPI
+<div class="installation-options">
+
+### 📦 From PyPI
 ```bash
 pip install skypulse
 ```
 
-### Development Installation
+### 🔧 Development Installation
 ```bash
 git clone https://github.com/HelpingAI/skypulse.git
 cd skypulse
 pip install -e ".[dev]"
 ```
 
+### 📋 Requirements
+
+- Python 3.7+
+- Required packages:
+  - `requests>=2.28.0`
+  - `aiohttp>=3.8.0`
+  - `pydantic>=1.9.0`
+  - `rich>=12.0.0`
+  - `typer>=0.7.0`
+
+</div>
+
 ## 📖 Quick Start
 
-### Synchronous Usage
+<div class="code-examples">
+
+### 🔄 Synchronous Usage
 ```python
 from skypulse import SkyPulse
 
@@ -75,12 +150,12 @@ print(f"Temperature: {current.temperature_c}°C")
 print(f"Condition: {current.condition.description}")
 
 # Get forecast
-forecast = client.get_forecast("London")
+forecast = client.get_forecast("London", days=3)
 for day in forecast.days:
     print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
 ```
 
-### Asynchronous Usage
+### ⚡ Asynchronous Usage
 ```python
 import asyncio
 from skypulse import SkyPulse
@@ -92,7 +167,7 @@ async def get_weather():
         print(f"Temperature: {current.temperature_c}°C")
         
         # Get forecast
-        forecast = await client.get_forecast_async("London")
+        forecast = await client.get_forecast_async("London", days=3)
         for day in forecast.days:
             print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
 
@@ -100,169 +175,156 @@ async def get_weather():
 asyncio.run(get_weather())
 ```
 
+### 🖥️ CLI Usage
+```bash
+# Get current weather
+skypulse "London"
+
+# Get 5-day forecast
+skypulse "London" --forecast --days 5
+
+# Get detailed weather with alerts
+skypulse "London" --detailed --alerts
+
+# Export weather data to JSON
+skypulse "London" --export weather.json
+
+# Simple output format
+skypulse "London" --simple
+```
+
+</div>
+
 ## 📚 Documentation
 
-### API Reference
+<div class="documentation">
 
-<details>
-<summary><b>SkyPulse Client</b></summary>
+### 🎯 Core Features
 
-```python
-class SkyPulse:
-    def __init__(self, api_url: Optional[str] = None, async_mode: bool = False):
-        """Initialize SkyPulse client."""
-        
-    def get_current(self, location: str, format: str = "j1") -> Weather:
-        """Get current weather for a location."""
-        
-    async def get_current_async(self, location: str, format: str = "j1") -> Weather:
-        """Get current weather for a location asynchronously."""
-        
-    def get_forecast(self, location: str, format: str = "j1") -> Forecast:
-        """Get weather forecast for a location."""
-        
-    async def get_forecast_async(self, location: str, format: str = "j1") -> Forecast:
-        """Get weather forecast for a location asynchronously."""
-        
-    def get_all(self, location: str, format: str = "j1") -> Dict[str, Any]:
-        """Get all weather data for a location."""
-        
-    async def get_all_async(self, location: str, format: str = "j1") -> Dict[str, Any]:
-        """Get all weather data for a location asynchronously."""
-```
-</details>
+- **Location Support**: Search by city name
+- **Data Formats**: Support for both j1 and j2 API response formats
+- **Error Handling**: Comprehensive error handling with detailed messages
+- **Rate Limiting**: Automatic rate limit handling with retries
+- **Caching**: Optional response caching for improved performance
 
-<details>
-<summary><b>Weather Models</b></summary>
+### 🔧 Configuration Options
 
-```python
-@dataclass
-class Weather:
-    temperature_c: float
-    temperature_f: float
-    feels_like_c: float
-    humidity: int
-    wind_speed_kmh: float
-    wind_direction: str
-    condition: WeatherCondition
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `format` | str | "j2" | API response format (j1/j2) |
+| `async_mode` | bool | False | Enable async operations |
+| `cache_ttl` | int | 300 | Cache TTL in seconds |
+| `timeout` | int | 10 | Request timeout in seconds |
 
-@dataclass
-class Forecast:
-    days: List[ForecastDay]
+### 🛠️ Advanced Usage
 
-@dataclass
-class Location:
-    name: str
-    country: str
-    latitude: float
-    longitude: float
-```
-</details>
+- **Custom Endpoints**: Configure custom API endpoints
+- **Proxy Support**: HTTP/HTTPS proxy configuration
+- **Response Parsing**: Custom response parsing options
+- **Retry Strategy**: Configurable retry mechanisms
 
-### Data Formats
-
-- **j1 (Basic)**
-  - Current conditions
-  - Basic forecast
-  - Essential location data
-
-- **j2 (Extended)**
-  - Detailed conditions
-  - Extended forecast
-  - Astronomical data
-  - Request metadata
-
-## 🌈 Examples
-
-### Custom API URL
-```python
-# Synchronous
-client = SkyPulse(api_url="https://your-api-url.com")
-weather = client.get_current("London")
-
-# Asynchronous
-async with SkyPulse(api_url="https://your-api-url.com", async_mode=True) as client:
-    weather = await client.get_current_async("London")
-```
-
-### Error Handling
-```python
-from skypulse import SkyPulse, SkyPulseError, LocationError
-
-try:
-    client = SkyPulse()
-    weather = client.get_current("NonexistentCity")
-except LocationError as e:
-    print(f"📍 Location error: {e}")
-except SkyPulseError as e:
-    print(f"⚠️ Weather error: {e}")
-```
-
-### Extended Format (j2)
-```python
-data = client.get_all("London", format="j2")
-location = data["location"]
-current = data["current"]
-forecast = data["forecast"]
-
-print(f"Location: {location.name}, {location.country}")
-print(f"Temperature: {current.temperature_c}°C")
-print(f"Condition: {current.condition.description}")
-
-for day in forecast.days:
-    print(f"\nDate: {day.date}")
-    print(f"Temperature: {day.min_temp_c}°C to {day.max_temp_c}°C")
-    print(f"Sunrise: {day.astronomy.sunrise}")
-    print(f"Sunset: {day.astronomy.sunset}")
-```
-
-## 🛠️ Development
-
-### Setup
-```bash
-# Clone repository
-git clone https://github.com/HelpingAI/skypulse.git
-cd skypulse
-
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest
-```
-
-### Code Quality
-```bash
-# Format code
-black .
-isort .
-
-# Type checking
-mypy .
-
-# Linting
-ruff check .
-pylint skypulse
-```
+</div>
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+<div class="contributing">
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+We welcome contributions! Here's how you can help:
 
-## 📝 License
+1. 🐛 **Report Bugs**: Open an [issue](https://github.com/HelpingAI/skypulse/issues)
+2. 💡 **Suggest Features**: Share your ideas in [issues](https://github.com/HelpingAI/skypulse/issues)
+3. 📝 **Documentation**: Help improve our [docs](https://skypulse.readthedocs.io/)
+4. 🔧 **Code**: Submit [pull requests](https://github.com/HelpingAI/skypulse/pulls)
 
-This project is licensed under the HelpingAI License v3.0 - see the [LICENSE](LICENSE.md) file for details.
+Please read our [Contributing Guide](CONTRIBUTING.md) for details.
 
----
+</div>
+
+## 📊 Project Stats
+
+<div align="center">
+  <a href="https://github.com/HelpingAI/skypulse/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/HelpingAI/skypulse.svg" alt="Contributors">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/network/members">
+    <img src="https://img.shields.io/github/forks/HelpingAI/skypulse.svg" alt="Forks">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/issues">
+    <img src="https://img.shields.io/github/issues/HelpingAI/skypulse.svg" alt="Issues">
+  </a>
+  <a href="https://github.com/HelpingAI/skypulse/pulls">
+    <img src="https://img.shields.io/github/issues-pr/HelpingAI/skypulse.svg" alt="Pull Requests">
+  </a>
+</div>
+
+## 📅 Release Schedule
+
+- **Stable Releases**: Every 4-6 weeks
+- **Bug Fixes**: As needed
+- **Security Updates**: Within 48 hours
+- [View Release History](https://github.com/HelpingAI/skypulse/releases)
+
+## 🔒 Security
+
+Found a security issue? Please report it privately via:
+- [GitHub Security Advisories](https://github.com/HelpingAI/skypulse/security/advisories)
+- Email: security@helpingai.com
+
+## 📫 Contact
+
+- **Discord**: [Join our community](https://discord.gg/helpingai)
+
+- **Email**: support@helpingai.com
 
 <div align="center">
 
-Made with ❤️ by [HelpingAI](https://github.com/HelpingAI)
+---
+
+<p>
+  Made with ❤️ by <a href="https://github.com/HelpingAI">HelpingAI</a>
+</p>
+
+<p>
+  <a href="https://github.com/HelpingAI/skypulse/blob/main/LICENSE.md">HelpingAI License</a> •
+  <a href="https://github.com/HelpingAI/skypulse/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a> •
+  <a href="https://github.com/HelpingAI/skypulse/blob/main/SECURITY.md">Security Policy</a>
+</p>
 
 </div>
+
+<style>
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.feature-item {
+  padding: 1rem;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.feature-item h3 {
+  margin-top: 0;
+  color: #0366d6;
+}
+
+.code-examples {
+  margin: 2rem 0;
+}
+
+.documentation {
+  margin: 2rem 0;
+}
+
+.contributing {
+  margin: 2rem 0;
+}
+
+.installation-options {
+  margin: 2rem 0;
+}
+</style>
