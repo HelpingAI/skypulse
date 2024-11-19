@@ -1,20 +1,42 @@
-"""Command line interface for SkyPulse weather data."""
+"""Command line interface for SkyPulse - Modern Weather Data Package."""
 
 import sys
-import argparse
-from datetime import datetime
-from typing import Optional, Dict, Any
 import json
+import locale
+from datetime import datetime
+from typing import Optional, Dict, Any, List
+from pathlib import Path
+
+import typer
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
+from rich.columns import Columns
 from rich import print as rprint
-from rich.progress import Progress
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.markdown import Markdown
+from rich.live import Live
 
 from .client import SkyPulse, SkyPulseError
 from .version import __version__, __prog__
+from .ai_weather import WeatherAnalyzer
 
-console = Console()
+# Configure console for proper Unicode handling
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8')
+    
+app = typer.Typer(
+    name=__prog__,
+    help="Modern Python weather data retrieval CLI",
+    add_completion=True
+)
+console = Console(force_terminal=True)
+
+def version_callback(value: bool):
+    """Show version and exit."""
+    if value:
+        console.print(f"{__prog__} version: [cyan]{__version__}[/]")
+        raise typer.Exit()
 
 def create_weather_table(data: Dict[str, Any], location: str) -> Table:
     """Create a formatted table for weather data."""
@@ -62,85 +84,129 @@ def format_forecast_day(day, detailed: bool = False) -> Panel:
         })
     
     table = create_weather_table(forecast_data, day.date)
-    return Panel(table, title=f"Forecast for {day.date}", border_style="magenta")
+    return Panel(table, title=f"[bold magenta]Forecast for {day.date}[/]", border_style="magenta")
 
-def export_json(data: Dict[str, Any], filename: str):
-    """Export weather data to JSON file."""
-    with open(filename, 'w') as f:
-        json.dump(data, f, indent=2)
-    console.print(f"✓ Data exported to {filename}", style="green")
+def export_data(data: Dict[str, Any], format: str, filename: Optional[str] = None):
+    """Export weather data to file."""
+    if not filename:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"weather_data_{timestamp}.{format}"
+    
+    filepath = Path(filename)
+    if format == "json":
+        with open(filepath, 'w') as f:
+            json.dump(data, f, indent=2)
+    else:
+        raise ValueError(f"Unsupported export format: {format}")
+    
+    console.print(f"✓ Data exported to {filepath}", style="green")
+
+@app.command()
+def current(
+    location: str = typer.Option(None, "--location", "-l", help="Location for weather data"),
+    api_key: str = typer.Option(None, "--api-key", "-k", help="API key for weather service", envvar="SKYPULSE_API_KEY"),
+    export: str = typer.Option(None, "--export", "-e", help="Export data (json)"),
+    version: bool = typer.Option(None, "--version", "-v", callback=version_callback, is_eager=True, help="Show version and exit"),
+):
+    """Get current weather conditions."""
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task("Fetching current weather...", total=None)
+            client = SkyPulse(api_key)
+            current = client.get_current(location)
+            loc = f"{current.location.name}, {current.location.country}"
+        
+        console.print(format_current_weather(current, loc))
+        
+        if export:
+            data = {
+                "location": loc,
+                "current": current.to_dict()
+            }
+            export_data(data, export)
+            
+    except Exception as e:
+        console.print(f"[red]Error:[/] {str(e)}")
+        raise typer.Exit(1)
+
+@app.command()
+def forecast(
+    location: str = typer.Option(None, "--location", "-l", help="Location for weather data"),
+    api_key: str = typer.Option(None, "--api-key", "-k", help="API key for weather service", envvar="SKYPULSE_API_KEY"),
+    days: int = typer.Option(3, "--days", "-d", help="Number of forecast days"),
+    detailed: bool = typer.Option(False, "--detailed", help="Show detailed information"),
+    export: str = typer.Option(None, "--export", "-e", help="Export data (json)"),
+):
+    """Get weather forecast."""
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task("Fetching forecast...", total=None)
+            client = SkyPulse(api_key)
+            forecast = client.get_forecast(location, days=days)
+            loc = f"{forecast.location.name}, {forecast.location.country}"
+        
+        panels: List[Panel] = []
+        for day in forecast.days[:days]:
+            panels.append(format_forecast_day(day, detailed))
+        
+        console.print(Columns(panels))
+        
+        if export:
+            data = {
+                "location": loc,
+                "forecast": forecast.to_dict()
+            }
+            export_data(data, export)
+            
+    except Exception as e:
+        console.print(f"[red]Error:[/] {str(e)}")
+        raise typer.Exit(1)
+
+@app.command()
+def analyze(
+    location: str = typer.Option(None, "--location", "-l", help="Location for weather data"),
+    api_key: str = typer.Option(None, "--api-key", "-k", help="API key for weather service", envvar="SKYPULSE_API_KEY"),
+    openai_api_key: str = typer.Option(None, "--openai-key", help="OpenAI API key", envvar="OPENAI_API_KEY"),
+):
+    """Get AI-powered weather analysis and insights."""
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task("Analyzing weather data...", total=None)
+            analyzer = WeatherAnalyzer(openai_api_key)
+            weather_data = analyzer._get_weather_data(location)
+            
+        # Print AI analysis in real-time using sys.stdout
+        console.print("\n", end="")  # Start with a newline
+        for text in analyzer._get_ai_analysis(weather_data):
+            sys.stdout.write(text)
+            sys.stdout.flush()
+        console.print("\n")  # End with a newline
+            
+    except Exception as e:
+        console.print(f"[red]Error:[/] {str(e)}")
+        raise typer.Exit(1)
 
 def main():
     """Main entry point for the CLI."""
-    parser = argparse.ArgumentParser(
-        prog=__prog__,
-        description="🌤️  SkyPulse - Modern Weather Data CLI",
-        formatter_class=argparse.RawDescriptionHelpFormatter
-    )
-    
-    parser.add_argument("location", help="Location to get weather for")
-    parser.add_argument("--version", action="version", version=f"SkyPulse {__version__}")
-    
-    # Weather data options
-    data_group = parser.add_argument_group("Weather Data Options")
-    data_group.add_argument("--forecast", "-f", action="store_true", help="Get weather forecast")
-    data_group.add_argument("--days", "-d", type=int, default=3, choices=range(1, 11), help="Number of forecast days (1-10, default: 3)")
-    data_group.add_argument("--detailed", "-D", action="store_true", help="Show detailed information")
-    data_group.add_argument("--format", choices=["j1", "j2"], default="j2", help="API response format (default: j2)")
-    data_group.add_argument("--alerts", "-a", action="store_true", help="Show weather alerts if available")
-    
-    # Output options
-    output_group = parser.add_argument_group("Output Options")
-    output_group.add_argument("--json", "-j", action="store_true", help="Output raw JSON data")
-    output_group.add_argument("--export", "-e", metavar="FILE", help="Export data to JSON file")
-    output_group.add_argument("--no-color", action="store_true", help="Disable colored output")
-    output_group.add_argument("--simple", "-s", action="store_true", help="Simple output format")
-    
-    args = parser.parse_args()
-    
-    if args.no_color:
-        console.no_color = True
-
     try:
-        with Progress(transient=True) as progress:
-            task = progress.add_task("[cyan]Fetching weather data...", total=1)
-            
-            client = SkyPulse(format=args.format)
-            
-            if args.forecast:
-                data = client.get_forecast(args.location, days=args.days)
-                if args.json:
-                    console.print_json(data.dict())
-                else:
-                    for day in data.days:
-                        console.print(format_forecast_day(day, args.detailed))
-            else:
-                data = client.get_current(args.location)
-                if args.json:
-                    console.print_json(data.dict())
-                elif args.simple:
-                    console.print(f"[bold]{args.location}[/]: {data.temperature_c}°C, {data.condition.description}")
-                else:
-                    console.print(format_current_weather(data, args.location))
-            
-            if args.alerts and hasattr(data, 'alerts') and data.alerts:
-                console.print("\n[bold red]⚠️ Weather Alerts[/]")
-                for alert in data.alerts:
-                    console.print(Panel(alert.description, title=alert.title, border_style="red"))
-            
-            if args.export:
-                export_json(data.dict(), args.export)
-            
-            progress.update(task, completed=1)
-            
-    except SkyPulseError as e:
-        console.print(f"[bold red]Error:[/] {str(e)}")
-        sys.exit(1)
+        app()
     except KeyboardInterrupt:
         console.print("\n[yellow]Operation cancelled by user[/]")
         sys.exit(0)
     except Exception as e:
-        console.print(f"[bold red]Unexpected error:[/] {str(e)}")
+        console.print(f"[red]An unexpected error occurred:[/] {str(e)}")
         sys.exit(1)
 
 if __name__ == "__main__":

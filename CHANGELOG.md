@@ -5,6 +5,48 @@ All notable changes to the SkyPulse project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-01-17
+
+### Added
+- Complete integration with wttr.in API for reliable weather data
+- Comprehensive data models using Python dataclasses
+- Support for both j1 (detailed) and j2 (condensed) formats
+- AI-powered weather analysis with OpenAI integration
+- Natural language processing for weather insights
+- Activity suggestions based on weather conditions
+- Weather pattern detection and trend analysis
+- Location comparison functionality
+- Cross-platform Unicode support
+- Progress indicators for long-running operations
+- Type-safe data handling throughout
+- Custom unit preferences system
+- Concurrent location comparison
+
+### Changed
+- Switched to wttr.in as primary weather data provider
+- Improved error handling with custom exceptions
+- Enhanced documentation with new features and examples
+- Updated CLI interface with better formatting
+- Restructured project for better maintainability
+- Optimized async operations
+- Improved type hints coverage
+
+### Fixed
+- Unicode rendering issues on Windows
+- Real-time data streaming in async mode
+- Environment variable handling
+- Location validation and error reporting
+- Type conversion edge cases
+- Memory usage in concurrent operations
+
+### Development
+- Added comprehensive test suite
+- Implemented CI/CD pipeline
+- Added code quality tools (black, isort, mypy)
+- Improved development documentation
+- Added pre-commit hooks
+- Enhanced build system
+
 ## [1.0.0] - 2024-11-15
 
 ### Added
@@ -46,4 +88,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Type-safe implementations
 - Async-aware error handling
 
+[1.1.0]: https://github.com/HelpingAI/skypulse/releases/tag/v1.1.0
 [1.0.0]: https://github.com/HelpingAI/skypulse/releases/tag/v1.0.0

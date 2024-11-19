@@ -1,21 +1,27 @@
 """
 SkyPulse - Modern Weather Data Package
-Copyright (c) 2024 HelpingAI. All rights reserved.
-Licensed under the HelpingAI License v3.0
+A powerful Python library for weather data retrieval with AI capabilities
 """
 
 from setuptools import setup, find_packages
-from skypulse.version import __version__, __prog__
+import os
+
+# Read version from version.py
+about = {}
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, "skypulse", "version.py"), encoding="utf-8") as f:
+    exec(f.read(), about)
+
 # Read README for long description
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name=__prog__,
-    version=__version__,
+    name=about["__prog__"],
+    version=about["__version__"],
     author="HelpingAI",
     author_email="helpingai5@gmail.com",
-    description="Modern Python weather data retrieval library with async support",
+    description="Modern Python weather data retrieval library with async support and AI analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/HelpingAI/skypulse",
@@ -38,19 +44,21 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Scientific/Engineering :: Atmospheric Science",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Framework :: AsyncIO",
         "Natural Language :: English",
     ],
     packages=find_packages(),
     python_requires=">=3.7",
     install_requires=[
-        "requests>=2.28.0",
-        "aiohttp>=3.8.0",
+        "requests>=2.28.2",
+        "aiohttp>=3.8.4",
         "pydantic>=2.0.0",
-        "rich>=12.0.0",
-        "typer>=0.7.0",
-        "typing-extensions>=4.0.0",
+        "typing-extensions>=4.5.0",
         "python-dateutil>=2.8.2",
+        "openai>=1.3.0",
+        "rich>=13.3.5",
+        "typer>=0.9.0",
     ],
     extras_require={
         "dev": [
@@ -71,6 +79,30 @@ setup(
             "skypulse=skypulse.cli:main",
         ],
     },
+    keywords=[
+        "weather",
+        "wttr.in",
+        "async",
+        "api",
+        "climate",
+        "forecast",
+        "meteorology",
+        "python",
+        "ai",
+        "artificial-intelligence",
+        "machine-learning",
+        "nlp",
+        "natural-language-processing",
+        "weather-analysis",
+        "weather-ai",
+        "weather-forecast",
+        "weather-data",
+        "weather-api",
+        "asyncio",
+        "real-time",
+        "openai",
+        "helpingai",
+    ],
     include_package_data=True,
     zip_safe=False,
 )

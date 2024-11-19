@@ -1,240 +1,225 @@
-"""WeatherFlow data models."""
-
+"""Weather data models for SkyPulse."""
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional, Dict, Any, Union
 
 @dataclass
-class RequestInfo:
-    """Request information (v2 format only)."""
-    query: str
+class UnitPreferences:
+    """User preferences for units of measurement."""
+    temperature: str = "C"  # C or F
+    wind_speed: str = "kmh"  # kmh, mph, ms
+    pressure: str = "mb"  # mb, in
+    precipitation: str = "mm"  # mm, in
+    distance: str = "km"  # km, mi
+
+@dataclass
+class WeatherDesc:
+    """Weather description."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "WeatherDesc":
+        return cls(value=data["value"])
+
+@dataclass
+class WeatherIconUrl:
+    """Weather icon URL."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "WeatherIconUrl":
+        return cls(value=data["value"])
+
+@dataclass
+class AreaName:
+    """Area name."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "AreaName":
+        return cls(value=data["value"])
+
+@dataclass
+class Country:
+    """Country name."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Country":
+        return cls(value=data["value"])
+
+@dataclass
+class Region:
+    """Region name."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Region":
+        return cls(value=data["value"])
+
+@dataclass
+class WeatherUrl:
+    """Weather URL."""
+    value: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "WeatherUrl":
+        return cls(value=data["value"])
+
+@dataclass
+class Request:
+    """API request details."""
     type: str
+    query: str
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'RequestInfo':
-        """Create RequestInfo from API response data."""
+    def from_dict(cls, data: Dict[str, Any]) -> "Request":
         return cls(
-            query=data.get('query', ''),
-            type=data.get('type', '')
-        )
-
-@dataclass
-class Location:
-    """Location data."""
-    name: str
-    country: str
-    region: str
-    latitude: float
-    longitude: float
-    population: int
-    weather_url: str
-
-    @classmethod
-    def from_data(cls, data: Union[List[Dict[str, Any]], Dict[str, Any]], format: str = "j1") -> 'Location':
-        """Create Location from API response data."""
-        if not data:
-            return cls("Unknown", "Unknown", "Unknown", 0.0, 0.0, 0, "")
-
-        # Handle both list (v1) and direct object (v2) formats
-        loc = data[0] if isinstance(data, list) else data
-        return cls(
-            name=loc.get('name', 'Unknown'),
-            country=loc.get('country', 'Unknown'),
-            region=loc.get('region', 'Unknown'),
-            latitude=float(loc.get('latitude', 0)),
-            longitude=float(loc.get('longitude', 0)),
-            population=int(loc.get('population', 0)),
-            weather_url=loc.get('weather_url', '')
-        )
-
-@dataclass
-class WeatherCondition:
-    """Weather condition data."""
-    code: int
-    description: str
-    icon_url: str
-
-    @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'WeatherCondition':
-        """Create WeatherCondition from API response data."""
-        return cls(
-            code=int(data.get('code', 0)),
-            description=data.get('description', 'Unknown'),
-            icon_url=data.get('icon_url', '')
+            type=data["type"],
+            query=data["query"]
         )
 
 @dataclass
 class Astronomy:
-    """Astronomical data."""
+    """Astronomy data."""
     sunrise: str
     sunset: str
     moonrise: str
     moonset: str
     moon_phase: str
-    moon_illumination: int
+    moon_illumination: str
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'Astronomy':
-        """Create Astronomy from API response data."""
+    def from_dict(cls, data: Dict[str, Any]) -> "Astronomy":
         return cls(
-            sunrise=data.get('sunrise', '06:00 AM'),
-            sunset=data.get('sunset', '06:00 PM'),
-            moonrise=data.get('moonrise', '12:00 PM'),
-            moonset=data.get('moonset', '12:00 AM'),
-            moon_phase=data.get('moon_phase', 'Unknown'),
-            moon_illumination=int(data.get('moon_illumination', 0))
+            sunrise=data["sunrise"],
+            sunset=data["sunset"],
+            moonrise=data["moonrise"],
+            moonset=data["moonset"],
+            moon_phase=data["moon_phase"],
+            moon_illumination=data["moon_illumination"]
         )
 
 @dataclass
-class HourlyForecast:
-    """Hourly forecast data."""
-    time: str
-    temperature_c: float
-    temperature_f: float
-    feels_like_c: float
-    feels_like_f: float
-    wind_speed_kmh: float
-    wind_speed_mph: float
-    wind_direction: str
-    wind_degree: int
-    wind_gust_kmh: float
-    wind_gust_mph: float
-    pressure_mb: int
-    pressure_in: float
-    humidity: int
-    cloud_cover: int
-    rain_chance: int
-    snow_chance: int
-    visibility: int
-    visibility_miles: int
-    uv_index: int
-    dew_point_c: float
-    dew_point_f: float
-    heat_index_c: float
-    heat_index_f: float
-    wind_chill_c: float
-    wind_chill_f: float
-    condition: WeatherCondition
+class CurrentCondition:
+    """Current weather conditions."""
+    observation_time: str
+    temp_C: str
+    temp_F: str
+    weatherCode: str
+    weatherIconUrl: List[WeatherIconUrl]
+    weatherDesc: List[WeatherDesc]
+    windspeedMiles: str
+    windspeedKmph: str
+    winddirDegree: str
+    winddir16Point: str
+    precipMM: str
+    precipInches: str
+    humidity: str
+    visibility: str
+    visibilityMiles: str
+    pressure: str
+    pressureInches: str
+    cloudcover: str
+    FeelsLikeC: str
+    FeelsLikeF: str
+    uvIndex: str
+    localObsDateTime: str
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'HourlyForecast':
-        """Create HourlyForecast from API response data."""
+    def from_dict(cls, data: Dict[str, Any]) -> "CurrentCondition":
         return cls(
-            time=data.get('time', '0'),
-            temperature_c=float(data.get('temperature_c', 0)),
-            temperature_f=float(data.get('temperature_f', 0)),
-            feels_like_c=float(data.get('feels_like_c', 0)),
-            feels_like_f=float(data.get('feels_like_f', 0)),
-            wind_speed_kmh=float(data.get('wind_speed_kmh', 0)),
-            wind_speed_mph=float(data.get('wind_speed_mph', 0)),
-            wind_direction=data.get('wind_direction', 'N'),
-            wind_degree=int(data.get('wind_degree', 0)),
-            wind_gust_kmh=float(data.get('wind_gust_kmh', 0)),
-            wind_gust_mph=float(data.get('wind_gust_mph', 0)),
-            pressure_mb=int(data.get('pressure_mb', 0)),
-            pressure_in=float(data.get('pressure_in', 0)),
-            humidity=int(data.get('humidity', 0)),
-            cloud_cover=int(data.get('cloud_cover', 0)),
-            rain_chance=int(data.get('rain_chance', 0)),
-            snow_chance=int(data.get('snow_chance', 0)),
-            visibility=int(data.get('visibility', 0)),
-            visibility_miles=int(data.get('visibility_miles', 0)),
-            uv_index=int(data.get('uv_index', 0)),
-            dew_point_c=float(data.get('dew_point_c', 0)),
-            dew_point_f=float(data.get('dew_point_f', 0)),
-            heat_index_c=float(data.get('heat_index_c', 0)),
-            heat_index_f=float(data.get('heat_index_f', 0)),
-            wind_chill_c=float(data.get('wind_chill_c', 0)),
-            wind_chill_f=float(data.get('wind_chill_f', 0)),
-            condition=WeatherCondition.from_data(data.get('condition', {}))
+            observation_time=data["observation_time"],
+            temp_C=data["temp_C"],
+            temp_F=data["temp_F"],
+            weatherCode=data["weatherCode"],
+            weatherIconUrl=[WeatherIconUrl.from_dict(x) for x in data["weatherIconUrl"]],
+            weatherDesc=[WeatherDesc.from_dict(x) for x in data["weatherDesc"]],
+            windspeedMiles=data["windspeedMiles"],
+            windspeedKmph=data["windspeedKmph"],
+            winddirDegree=data["winddirDegree"],
+            winddir16Point=data["winddir16Point"],
+            precipMM=data["precipMM"],
+            precipInches=data["precipInches"],
+            humidity=data["humidity"],
+            visibility=data["visibility"],
+            visibilityMiles=data["visibilityMiles"],
+            pressure=data["pressure"],
+            pressureInches=data["pressureInches"],
+            cloudcover=data["cloudcover"],
+            FeelsLikeC=data["FeelsLikeC"],
+            FeelsLikeF=data["FeelsLikeF"],
+            uvIndex=data["uvIndex"],
+            localObsDateTime=data.get("localObsDateTime", data.get("observation_time", ""))
         )
 
 @dataclass
-class ForecastDay:
-    """Daily forecast data."""
-    date: str
-    max_temp_c: float
-    max_temp_f: float
-    min_temp_c: float
-    min_temp_f: float
-    avg_temp_c: float
-    avg_temp_f: float
-    total_snow_cm: float
-    sun_hour: float
-    uv_index: int
-    hourly: List[HourlyForecast]
-    astronomy: Astronomy
+class NearestArea:
+    """Nearest area information."""
+    latitude: str
+    longitude: str
+    population: str
+    areaName: List[AreaName]
+    country: List[Country]
+    region: List[Region]
+    weatherUrl: List[WeatherUrl]
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'ForecastDay':
-        """Create ForecastDay from API response data."""
+    def from_dict(cls, data: Dict[str, Any]) -> "NearestArea":
         return cls(
-            date=data.get('date', ''),
-            max_temp_c=float(data.get('max_temp_c', 0)),
-            max_temp_f=float(data.get('max_temp_f', 0)),
-            min_temp_c=float(data.get('min_temp_c', 0)),
-            min_temp_f=float(data.get('min_temp_f', 0)),
-            avg_temp_c=float(data.get('avg_temp_c', 0)),
-            avg_temp_f=float(data.get('avg_temp_f', 0)),
-            total_snow_cm=float(data.get('total_snow_cm', 0)),
-            sun_hour=float(data.get('sun_hour', 0)),
-            uv_index=int(data.get('uv_index', 0)),
-            hourly=[HourlyForecast.from_data(h) for h in data.get('hourly', [])],
-            astronomy=Astronomy.from_data(data.get('astronomy', {}))
-        )
-
-@dataclass
-class Forecast:
-    """Weather forecast data."""
-    days: List[ForecastDay]
-
-    @classmethod
-    def from_data(cls, data: Dict[str, Any], format: str = "j1") -> 'Forecast':
-        """Create Forecast from API response data."""
-        return cls(
-            days=[ForecastDay.from_data(day) for day in data.get('days', [])]
+            latitude=data["latitude"],
+            longitude=data["longitude"],
+            population=data["population"],
+            areaName=[AreaName.from_dict(x) for x in data["areaName"]],
+            country=[Country.from_dict(x) for x in data["country"]],
+            region=[Region.from_dict(x) for x in data["region"]],
+            weatherUrl=[WeatherUrl.from_dict(x) for x in data["weatherUrl"]]
         )
 
 @dataclass
 class Weather:
-    """Current weather data."""
-    temperature_c: float
-    temperature_f: float
-    feels_like_c: float
-    feels_like_f: float
-    wind_speed_kmh: float
-    wind_speed_mph: float
-    wind_direction: str
-    wind_degree: int
-    pressure_mb: int
-    pressure_in: float
-    humidity: int
-    cloud_cover: int
-    visibility: int
-    visibility_miles: int
-    uv_index: int
-    local_obs_time: Optional[str]
-    condition: WeatherCondition
+    """Weather forecast data."""
+    date: str
+    astronomy: List[Astronomy]
+    maxtempC: str
+    maxtempF: str
+    mintempC: str
+    mintempF: str
+    avgtempC: str
+    avgtempF: str
+    totalSnow_cm: str
+    sunHour: str
+    uvIndex: str
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any], format: str = "j1") -> 'Weather':
-        """Create Weather from API response data."""
+    def from_dict(cls, data: Dict[str, Any]) -> "Weather":
         return cls(
-            temperature_c=float(data.get('temperature_c', 0)),
-            temperature_f=float(data.get('temperature_f', 0)),
-            feels_like_c=float(data.get('feels_like_c', 0)),
-            feels_like_f=float(data.get('feels_like_f', 0)),
-            wind_speed_kmh=float(data.get('wind_speed_kmh', 0)),
-            wind_speed_mph=float(data.get('wind_speed_mph', 0)),
-            wind_direction=data.get('wind_direction', 'N'),
-            wind_degree=int(data.get('wind_degree', 0)),
-            pressure_mb=int(data.get('pressure_mb', 0)),
-            pressure_in=float(data.get('pressure_in', 0)),
-            humidity=int(data.get('humidity', 0)),
-            cloud_cover=int(data.get('cloud_cover', 0)),
-            visibility=int(data.get('visibility', 0)),
-            visibility_miles=int(data.get('visibility_miles', 0)),
-            uv_index=int(data.get('uv_index', 0)),
-            local_obs_time=data.get('local_obs_time'),
-            condition=WeatherCondition.from_data(data.get('condition', {}))
+            date=data["date"],
+            astronomy=[Astronomy.from_dict(x) for x in data["astronomy"]],
+            maxtempC=data["maxtempC"],
+            maxtempF=data["maxtempF"],
+            mintempC=data["mintempC"],
+            mintempF=data["mintempF"],
+            avgtempC=data["avgtempC"],
+            avgtempF=data["avgtempF"],
+            totalSnow_cm=data["totalSnow_cm"],
+            sunHour=data["sunHour"],
+            uvIndex=data["uvIndex"]
+        )
+
+@dataclass
+class WttrResponse:
+    """Full weather response."""
+    request: List[Request]
+    current_condition: List[CurrentCondition]
+    nearest_area: List[NearestArea]
+    weather: List[Weather]
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "WttrResponse":
+        return cls(
+            request=[Request.from_dict(x) for x in data.get("request", [])],
+            current_condition=[CurrentCondition.from_dict(x) for x in data.get("current_condition", [])],
+            nearest_area=[NearestArea.from_dict(x) for x in data.get("nearest_area", [])],
+            weather=[Weather.from_dict(x) for x in data.get("weather", [])]
         )

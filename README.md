@@ -64,20 +64,20 @@
     <ul>
       <li>Full type hints support</li>
       <li>Async and sync operations</li>
-      <li>Pydantic data models</li>
+      <li>Dataclass-style models</li>
       <li>Context managers</li>
-      <li>Rich CLI interface</li>
+      <li>Clean API interface</li>
     </ul>
   </div>
 
   <div class="feature">
-    <h3>🌡️ Comprehensive Weather Data</h3>
+    <h3>🌡️ Weather Data</h3>
     <ul>
-      <li>Real-time conditions</li>
-      <li>Multi-day forecasts</li>
+      <li>Current weather conditions</li>
+      <li>Detailed forecasts</li>
+      <li>Hourly predictions</li>
       <li>Astronomical data</li>
-      <li>Location information</li>
-      <li>Weather alerts</li>
+      <li>Wind information</li>
     </ul>
   </div>
 
@@ -87,19 +87,19 @@
       <li>Sync/Async operations</li>
       <li>Custom API endpoints</li>
       <li>Format selection (j1/j2)</li>
-      <li>Robust error handling</li>
-      <li>Progress tracking</li>
+      <li>Unit preferences</li>
+      <li>Multi-location support</li>
     </ul>
   </div>
 
   <div class="feature">
     <h3>🛠️ Developer Experience</h3>
     <ul>
-      <li>Comprehensive docs</li>
       <li>Type safety</li>
-      <li>IDE completion</li>
-      <li>Example code</li>
-      <li>Testing support</li>
+      <li>Error handling</li>
+      <li>Data validation</li>
+      <li>Easy integration</li>
+      <li>Modular design</li>
     </ul>
   </div>
 </div>
@@ -115,37 +115,53 @@ pip install skypulse
 ```bash
 git clone https://github.com/HelpingAI/skypulse.git
 cd skypulse
-pip install -e ".[dev]"
+pip install -e .
 ```
 
 ### 📋 Requirements
 
 - Python 3.7+
 - Required packages:
-  - `requests>=2.28.0`
-  - `aiohttp>=3.8.0`
-  - `pydantic>=2.0.0`
-  - `rich>=12.0.0`
-  - `typer>=0.7.0`
+  - `requests>=2.28.2` - HTTP requests for sync operations
+  - `aiohttp>=3.8.4` - Async HTTP client
 
 ## 📖 Quick Start
 
 ### 🔄 Synchronous Usage
 ```python
-from skypulse import SkyPulse
+from skypulse import SkyPulse, UnitPreferences
 
 # Initialize client
 client = SkyPulse()
+
+# Set unit preferences (optional)
+client.set_units(UnitPreferences(
+    temperature="C",
+    wind_speed="kmh",
+    pressure="mb"
+))
 
 # Get current weather
 current = client.get_current("London")
 print(f"Temperature: {current.temperature_c}°C")
 print(f"Condition: {current.condition.description}")
+print(f"Wind: {current.wind_speed_kmh} km/h {current.wind_direction}")
+print(f"Humidity: {current.humidity}%")
 
-# Get forecast
-forecast = client.get_forecast("London", days=3)
+# Get forecast with hourly data
+forecast = client.get_forecast("London")
 for day in forecast.days:
-    print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
+    print(f"\nDate: {day.date}")
+    print(f"Temperature: {day.min_temp_c}°C to {day.max_temp_c}°C")
+    print(f"Sunrise: {day.astronomy.sunrise}")
+    print(f"Sunset: {day.astronomy.sunset}")
+    
+    # Hourly forecast
+    for hour in day.hourly:
+        print(f"\nTime: {hour.time}")
+        print(f"Temperature: {hour.temperature_c}°C")
+        print(f"Feels like: {hour.feels_like_c}°C")
+        print(f"Rain chance: {hour.rain_chance}%")
 ```
 
 ### ⚡ Asynchronous Usage
@@ -153,92 +169,83 @@ for day in forecast.days:
 import asyncio
 from skypulse import SkyPulse
 
-async def get_weather():
+async def compare_weather():
     async with SkyPulse(async_mode=True) as client:
-        # Get current weather
-        current = await client.get_current_async("London")
-        print(f"Temperature: {current.temperature_c}°C")
+        # Compare weather for multiple cities concurrently
+        cities = ["London", "New York", "Tokyo"]
+        tasks = [client.get_current_async(city) for city in cities]
+        results = await asyncio.gather(*tasks)
         
-        # Get forecast
-        forecast = await client.get_forecast_async("London", days=3)
-        for day in forecast.days:
-            print(f"Date: {day.date}, Max: {day.max_temp_c}°C")
+        for city, weather in zip(cities, results):
+            print(f"\n{city}:")
+            print(f"Temperature: {weather.temperature_c}°C")
+            print(f"Condition: {weather.condition.description}")
+            print(f"Humidity: {weather.humidity}%")
 
 # Run async code
-asyncio.run(get_weather())
+asyncio.run(compare_weather())
 ```
 
-### 🖥️ CLI Usage
-```bash
-# Get current weather
-skypulse "London"
+## 📚 Core Features
 
-# Get 5-day forecast
-skypulse "London" --forecast --days 5
+### Current Weather
+- Real-time temperature and humidity
+- Wind speed, direction, and gusts
+- Atmospheric pressure
+- Cloud cover and visibility
+- Weather conditions with icons
 
-# Get detailed weather with alerts
-skypulse "London" --detailed --alerts
+### Weather Forecast
+- Multi-day weather forecasts
+- Hourly predictions
+- Temperature ranges
+- Rain and snow chances
+- Astronomical data (sunrise/sunset)
 
-# Export weather data to JSON
-skypulse "London" --export weather.json
+### Location Support
+- City name or coordinates
+- Country and region info
+- Latitude and longitude
+- Population data
+- Weather station URL
 
-# Simple output format
-skypulse "London" --simple
+### Unit Preferences
+- Temperature (°C/°F)
+- Wind speed (km/h, mph)
+- Pressure (mb, in)
+- Distance (km, miles)
+- Precipitation (mm, in)
+
+### AI Analysis
+- Real-time weather insights
+- Natural language analysis
+- Activity suggestions
+- Weather pattern detection
+- Streaming responses
+- Cross-platform Unicode support
+
+## 🤖 AI Usage
+```python
+from skypulse.ai_weather import WeatherAnalyzer
+
+# Initialize analyzer
+analyzer = WeatherAnalyzer()
+
+# Get AI analysis
+analysis = analyzer.analyze_weather("Tokyo")
+print(analysis)
+
+# CLI usage
+skypulse analyze --location "Tokyo"
 ```
 
-## 📚 Documentation
+## 📝 Contributing
 
-### 🎯 Core Features
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-- **Location Support**: Search by city name
-- **Data Formats**: Support for both j1 and j2 API response formats
-- **Error Handling**: Comprehensive error handling with detailed messages
-- **Rate Limiting**: Automatic rate limit handling with retries
-- **Caching**: Optional response caching for improved performance
+## 📄 License
 
-### 🔧 Configuration Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `format` | str | "j2" | API response format (j1/j2) |
-| `async_mode` | bool | False | Enable async operations |
-| `cache_ttl` | int | 300 | Cache TTL in seconds |
-| `timeout` | int | 10 | Request timeout in seconds |
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. 🐛 **Report Bugs**: Open an [issue](https://github.com/HelpingAI/skypulse/issues)
-2. 💡 **Suggest Features**: Share your ideas in [issues](https://github.com/HelpingAI/skypulse/issues)
-3. 📝 **Documentation**: Help improve our docs
-4. 🔧 **Code**: Submit [pull requests](https://github.com/HelpingAI/skypulse/pulls)
-
-Please read our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## 📊 Project Stats
-
-<div align="center">
-  <a href="https://github.com/HelpingAI/skypulse/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/HelpingAI/skypulse.svg" alt="Contributors">
-  </a>
-  <a href="https://github.com/HelpingAI/skypulse/network/members">
-    <img src="https://img.shields.io/github/forks/HelpingAI/skypulse.svg" alt="Forks">
-  </a>
-  <a href="https://github.com/HelpingAI/skypulse/issues">
-    <img src="https://img.shields.io/github/issues/HelpingAI/skypulse.svg" alt="Issues">
-  </a>
-  <a href="https://github.com/HelpingAI/skypulse/pulls">
-    <img src="https://img.shields.io/github/issues-pr/HelpingAI/skypulse.svg" alt="Pull Requests">
-  </a>
-</div>
-
-## 🔒 Security
-
-Found a security issue? Please report it privately via:
-- [GitHub Security Advisories](https://github.com/HelpingAI/skypulse/security/advisories)
-- Email: helpingai5@gmail.com
-
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 <div align="center">
 
