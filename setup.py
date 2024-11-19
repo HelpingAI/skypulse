@@ -1,6 +1,8 @@
 """
 SkyPulse - Modern Weather Data Package
 A powerful Python library for weather data retrieval with AI capabilities
+Copyright (c) 2024 HelpingAI. All rights reserved.
+Licensed under the HelpingAI License v3.0
 """
 
 from setuptools import setup, find_packages
